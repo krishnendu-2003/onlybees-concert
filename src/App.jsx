@@ -147,7 +147,7 @@ export default function App() {
 
               <TabBar tabs={EVENT.tabs} activeTab={activeTab} onChange={setActiveTab} />
 
-              <Card style={{ marginTop: 14 }}>{tabContent}</Card>
+              <Card style={{ marginTop: 14, border: "none"}}>{tabContent}</Card>
             </div>
 
             {/* RIGHT */}
@@ -160,26 +160,32 @@ export default function App() {
                 arrowSrc={IMAGES.arrow}
                 onBook={handleBook}
               />
-
-              <Card style={{ marginTop: 14 }}>
-                <h2 style={styles.sectionTitle}>Event Guide</h2>
-                <div style={styles.infoGrid}>
-                  {EVENT.guide.map((row) => (
-                    <InfoTile key={row.label} label={row.label} value={row.value} />
-                  ))}
-                </div>
-              </Card>
-
-              <Card style={{ marginTop: 14 }}>
-                <h2 style={styles.sectionTitle}>Artist</h2>
-                <ArtistRow
-                  name={EVENT.artist.name}
-                  meta={EVENT.artist.meta}
-                  link={EVENT.artist.link}
-                />
-              </Card>
             </div>
           </div>
+
+          {/* Event Guide - spans full width */}
+          <div style={{ marginTop: 14 }}>
+            <h2 style={styles.eventGuideTitle}>Event Guide</h2>
+            <Card style={{ border: "none" }}>
+              <div style={{
+                ...styles.eventGuideGrid,
+                flexDirection: isNarrow ? "column" : "row",
+              }}>
+                {EVENT.guide.map((row) => (
+                  <InfoTile key={row.label} label={row.label} value={row.value} />
+                ))}
+              </div> 
+            </Card>
+          </div>
+
+          {/* Artist section - below Event Guide */}
+          <Card style={{ marginTop: 14, border: "none", background: "transparent" }}>
+            <h2 style={styles.sectionTitle}>Artist</h2>
+            <ArtistRow
+              name={EVENT.artist.name}
+              meta={EVENT.artist.meta}
+            />
+          </Card>
         </Container>
       </main>
 
@@ -221,19 +227,68 @@ const styles = {
   },
   kickerText: { fontSize: 14 },
 
-  h1: { margin: 0, fontSize: 44, lineHeight: 1.05, letterSpacing: -0.6 },
+  h1: {
+    margin: 0,
+    fontSize: 44,
+    lineHeight: 1.05,
+    letterSpacing: -0.6
+  },
 
-  dateRow: { marginTop: 10 },
-  dateText: { color: COLORS.green, fontWeight: 800, fontSize: 14 },
+  dateRow: {
+    marginTop: 10
+  },
+  dateText: {
+    color: COLORS.green,
+    fontWeight: 800,
+    fontSize: 14
+  },
 
-  cityRow: { display: "flex", alignItems: "center", gap: 10, marginTop: 10 },
-  dot: { width: 8, height: 8, borderRadius: 99, background: "rgba(255,255,255,0.35)" },
-  cityText: { color: COLORS.muted, fontSize: 14 },
+  cityRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    marginTop: 10
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 99,
+    background: "rgba(255,255,255,0.35)"
+  },
+  cityText: {
+    color: COLORS.muted,
+    fontSize: 14
+  },
 
-  sectionTitle: { margin: "0 0 12px", fontSize: 16, letterSpacing: 0.2 },
-  subtleTitle: { marginTop: 12, color: COLORS.muted, fontWeight: 700 },
+  sectionTitle: {
+    margin: "0 0 12px",
+    fontSize: 16,
+    letterSpacing: 0.2
+  },
+  eventGuideTitle: {
+    margin: "0 0 14px",
+    fontSize: 20,
+    fontWeight: 900,
+    color: COLORS.text,
+    letterSpacing: -0.2,
+  },
+  subtleTitle: {
+    marginTop: 12,
+    color: COLORS.muted,
+    fontWeight: 700
+  },
 
-  infoGrid: { display: "grid", gridTemplateColumns: "1fr", gap: 10 },
+  infoGrid: {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gap: 10
+  },
+  eventGuideGrid: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 0,
+    alignItems: "stretch",
+  },
   venueLayoutImage: {
     width: "50%",
     height: "10%",

@@ -20,7 +20,7 @@ export default function TicketsComingSoon() {
   const addToCart = (ticket) => {
     // Don't add sold out tickets to cart
     if (ticket.isSoldOut) return;
-    
+
     setCart((prevCart) => {
       // If this ticket is already in the cart, increment its quantity
       if (prevCart[ticket.id]) {
@@ -106,8 +106,8 @@ export default function TicketsComingSoon() {
       const features = Array.isArray(featuresRaw)
         ? featuresRaw
         : typeof featuresRaw === "string"
-        ? featuresRaw.split(/[.|•\-]\s+/).filter(Boolean)
-        : [];
+          ? featuresRaw.split(/[.|•\-]\s+/).filter(Boolean)
+          : [];
       const taxIncluded = !!pickFirst(item, ["taxIncluded", "includesTax"]);
       const availabilityQuantity = pickFirst(item, ["availabilityQuantity", "availableQuantity", "quantity", "stock"]) ?? null;
       const isSoldOut = availabilityQuantity !== null && Number(availabilityQuantity) <= 0;
@@ -184,19 +184,19 @@ export default function TicketsComingSoon() {
       <GlobalStyles />
       <main style={styles.main}>
         <Container>
-          <div style={{marginBottom: 24, marginTop: 24}}>
-          <h1 style={{ margin: 0, fontSize: 38, letterSpacing: -0.5, color: COLORS.green }}>TICKETS</h1>
+          <div style={{ marginBottom: 24, marginTop: 24 }}>
+            <h1 style={{ margin: 0, fontSize: 38, letterSpacing: -0.5, color: COLORS.green }}>TICKETS</h1>
 
           </div>
-            {/* Additional details from the API can be shown here */}
-            {/* Debug JSON can be toggled if needed */}
+          {/* Additional details from the API can be shown here */}
+          {/* Debug JSON can be toggled if needed */}
           {/* </Card> */}
           {tickets.length > 0 && (
-            <div style={{...styles.contentWrapper, flexDirection: isNarrow ? "column" : "row"}}>
-              <div style={{...styles.ticketsColumn, maxWidth: isNarrow ? "100%" : "50%"}}>
+            <div style={{ ...styles.contentWrapper, flexDirection: isNarrow ? "column" : "row" }}>
+              <div style={{ ...styles.ticketsColumn, maxWidth: isNarrow ? "100%" : "50%" }}>
                 {tickets.map((t) => (
-                  <div 
-                    key={String(t.id)} 
+                  <div
+                    key={String(t.id)}
                     style={styles.ticketCard}
                   >
                     <div style={styles.ticketCardInner}>
@@ -246,7 +246,7 @@ export default function TicketsComingSoon() {
                 ))}
               </div>
               {!isNarrow && (
-                <div style={{...styles.imageColumn, maxWidth: "50%"}}>
+                <div style={{ ...styles.imageColumn, maxWidth: "50%" }}>
                   <img src={StageImage} alt="Stage" style={styles.stageImage} />
                 </div>
               )}
@@ -261,10 +261,10 @@ export default function TicketsComingSoon() {
               <button style={styles.proceedButton} onClick={checkoutCart}>Proceed</button>
             </div>
           )}
-        
+
         </Container>
       </main>
-     
+
     </div>
   );
 }
@@ -305,16 +305,16 @@ const styles = {
   ticketCardInner: {
     position: "relative",
   },
-  ticketTitle: { 
-    fontSize: 22, 
-    fontWeight: 900, 
+  ticketTitle: {
+    fontSize: 22,
+    fontWeight: 900,
     letterSpacing: -0.2,
     color: COLORS.text,
     marginBottom: 12,
   },
-  ticketPriceRow: { 
-    display: "flex", 
-    alignItems: "center", 
+  ticketPriceRow: {
+    display: "flex",
+    alignItems: "center",
     justifyContent: "space-between",
     gap: 16,
     marginTop: 12,
@@ -324,15 +324,15 @@ const styles = {
     alignItems: "center",
     gap: 10,
   },
-  ticketPrice: { 
-    color: COLORS.green, 
-    fontWeight: 900, 
-    fontSize: 34, 
-    letterSpacing: -0.6 
+  ticketPrice: {
+    color: COLORS.green,
+    fontWeight: 900,
+    fontSize: 34,
+    letterSpacing: -0.6
   },
-  taxNote: { 
-    color: COLORS.muted, 
-    fontSize: 14 
+  taxNote: {
+    color: COLORS.muted,
+    fontSize: 14
   },
   divider: {
     marginTop: 14,
@@ -340,15 +340,15 @@ const styles = {
     background: "rgba(255,255,255,0.08)",
     width: "100%",
   },
-  featuresList: { 
-    margin: "12px 0 0 0", 
+  featuresList: {
+    margin: "12px 0 0 0",
     paddingLeft: 16,
     listStyle: "none",
   },
-  featureItem: { 
-    marginTop: 8, 
-    color: "rgba(255,255,255,0.85)", 
-    fontSize: 16 
+  featureItem: {
+    marginTop: 8,
+    color: "rgba(255,255,255,0.85)",
+    fontSize: 16
   },
   addButton: {
     background: COLORS.card,

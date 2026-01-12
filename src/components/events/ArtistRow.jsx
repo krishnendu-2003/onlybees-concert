@@ -1,40 +1,61 @@
 import React from "react";
 import { COLORS } from "../../theme/colors";
+import Media, { ImageFallback } from "../common/Media";
+import ArtistPhoto from "../../../public/artist_pic.png";
 
-export default function ArtistRow({ name, meta, link }) {
+export default function ArtistRow({ photo, name, meta, link }) {
   return (
     <div style={styles.artistRow}>
-      <div style={styles.artistAvatar}>
-        <span style={{ fontWeight: 800, color: COLORS.green }}>
-          {name?.slice(0, 1)?.toUpperCase() || "A"}
-        </span>
-      </div>
+      <Media
+        src={photo || ArtistPhoto}
+        alt="Artist photo"
+        style={styles.artistPhoto}
+        fallback={<ImageFallback label="Artist photo" />}
+      />
 
-      <div style={{ flex: 1 }}>
+      <div style={styles.artistInfo}>
         <div style={styles.artistName}>{name}</div>
         <div style={styles.artistMeta}>{meta}</div>
       </div>
 
-      <a href={link} target="_blank" rel="noreferrer" style={styles.artistLink}>
+      {/* <a href={link} target="_blank" rel="noreferrer" style={styles.artistLink}>
         Wiki
-      </a>
+      </a> */}
     </div>
   );
 }
 
 const styles = {
-  artistRow: { display: "flex", alignItems: "center", gap: 12 },
-  artistAvatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 16,
-    border: `1px solid rgba(0,255,56,0.35)`,
-    background: "rgba(0,255,56,0.10)",
-    display: "grid",
-    placeItems: "center",
+  artistRow: { 
+    display: "flex", 
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: 16,
   },
-  artistName: { fontWeight: 900 },
-  artistMeta: { marginTop: 3, color: COLORS.muted, fontSize: 13 },
+  artistPhoto: {
+    width: "100%",
+    maxWidth: 200,
+    height: "auto",
+    aspectRatio: "3/4",
+    borderRadius: 18,
+    objectFit: "cover",
+  },
+  artistInfo: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 6,
+  },
+  artistName: { 
+    fontWeight: 900,
+    fontSize: 24,
+    color: COLORS.text,
+    letterSpacing: -0.3,
+  },
+  artistMeta: { 
+    color: COLORS.muted, 
+    fontSize: 14,
+    lineHeight: 1.4,
+  },
   artistLink: {
     padding: "10px 12px",
     borderRadius: 12,
