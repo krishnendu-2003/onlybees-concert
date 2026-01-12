@@ -64,7 +64,6 @@ export default function CheckoutPage() {
   return (
     <div style={styles.page}>
       <GlobalStyles />
-      <TopNav logoSrc={IMAGES.brandLogo} />
       <main style={styles.main}>
         <Container>
           <div style={styles.header}>
