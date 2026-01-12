@@ -20,12 +20,18 @@ export default function TicketsComingSoon() {
   const addToCart = (ticket) => {
     // Don't add sold out tickets to cart
     if (ticket.isSoldOut) return;
-
+    
     setCart((prevCart) => {
-      // If this ticket is already in the cart, increment its quantity
+      const currentQty = prevCart[ticket.id] || 0;
+      const maxQuantity = Math.min(5, ticket.availabilityQuantity || 5);
+      
+      // If this ticket is already in the cart, increment its quantity (max 5)
       if (prevCart[ticket.id]) {
+        if (currentQty >= maxQuantity) {
+          return prevCart; // Don't increment if already at max
+        }
         return {
-          [ticket.id]: prevCart[ticket.id] + 1,
+          [ticket.id]: currentQty + 1,
         };
       }
       // If a different ticket is in the cart, replace it with the new one
@@ -108,6 +114,15 @@ export default function TicketsComingSoon() {
         : typeof featuresRaw === "string"
           ? featuresRaw.split(/[.|•\-]\s+/).filter(Boolean)
           : [];
+      const infoRaw = pickFirst(item, ["info", "information", "details"]) ?? [];
+      const info = Array.isArray(infoRaw)
+        ? infoRaw
+        : typeof infoRaw === "string"
+          ? infoRaw
+              .split("\\n")
+              .map(item => item.trim().replace(/^-\s*/, ""))
+              .filter(Boolean)
+          : [];
       const taxIncluded = !!pickFirst(item, ["taxIncluded", "includesTax"]);
       const availabilityQuantity = pickFirst(item, ["availabilityQuantity", "availableQuantity", "quantity", "stock"]) ?? null;
       const isSoldOut = availabilityQuantity !== null && Number(availabilityQuantity) <= 0;
@@ -116,6 +131,7 @@ export default function TicketsComingSoon() {
         title,
         price: Number.isFinite(rawPrice) ? rawPrice : rawPrice,
         features,
+        info,
         taxIncluded,
         availabilityQuantity,
         isSoldOut,
@@ -225,7 +241,13 @@ export default function TicketsComingSoon() {
                         </div>
                         <div style={styles.divider} />
                         <ul style={styles.featuresList}>
-                          {t.features.length ? (
+                          {t.info && t.info.length > 0 ? (
+                            t.info.map((item, idx) => (
+                              <li key={idx} style={styles.featureItem}>
+                                {String(item)}
+                              </li>
+                            ))
+                          ) : t.features.length ? (
                             t.features.map((f, idx) => (
                               <li key={idx} style={styles.featureItem}>
                                 {String(f)}
@@ -258,7 +280,7 @@ export default function TicketsComingSoon() {
                 <span style={styles.totalLabel}>Total:</span>
                 <span style={styles.totalAmount}>₹{getTotalPrice()}</span>
               </div>
-              <button style={styles.proceedButton} onClick={checkoutCart}>Proceed</button>
+              <button style={styles.proceedButton} onClick={checkoutCart}>Continue</button>
             </div>
           )}
 
