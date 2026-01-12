@@ -34,9 +34,9 @@ const styles = {
     position: "sticky",
     top: 0,
     zIndex: 50,
-    background: "rgba(30,30,30,0.82)",
+    background: "rgba(0, 0, 0, 0.87)",
     backdropFilter: "blur(10px)",
-    borderBottom: `1px solid ${COLORS.faint}`,
+    borderBottom: `1.5px solid ${COLORS.muted}`,
   },
   navInner: {
     maxWidth: 1140,
@@ -46,10 +46,26 @@ const styles = {
     alignItems: "center",
     justifyContent: "space-between",
   },
-  navLeft: { display: "flex", alignItems: "center", gap: 10 },
-  logo: { width: 140, height: 34, objectFit: "contain" },
-  navBrandText: { fontWeight: 700, letterSpacing: 0.2, color: COLORS.text },
-  navRight: { display: "flex", gap: 14, alignItems: "center" },
+  navLeft: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10
+  },
+  logo: {
+    width: 140,
+    height: 34,
+    objectFit: "contain"
+  },
+  navBrandText: {
+    fontWeight: 700,
+    letterSpacing: 0.2,
+    color: COLORS.text
+  },
+  navRight: {
+    display: "flex",
+    gap: 14,
+    alignItems: "center"
+  },
   navLink: {
     padding: "8px 10px",
     borderRadius: 10,
