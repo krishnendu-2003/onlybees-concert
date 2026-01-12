@@ -2,15 +2,6 @@
 
 A modern React-based web application for booking concert tickets, built with Vite. Features ticket selection, cart management, and checkout functionality.
 
-## 🚀 Features
-
-- Event listing with detailed information
-- Ticket selection with quantity management
-- Shopping cart functionality
-- Checkout page with order summary
-- GST calculation (18%)
-- Responsive design
-- Real-time ticket availability
 
 ## 📋 Prerequisites
 
@@ -169,16 +160,6 @@ npm run preview
 - GST is calculated at 18% of the subtotal
 - Maximum ticket quantity per type is limited to 5
 
-## 🤝 Contributing
-
-1. Create a new branch for your feature
-2. Make your changes
-3. Test thoroughly
-4. Submit a pull request
-
-## 📄 License
-
-[Add your license information here]
 
 ---
 
