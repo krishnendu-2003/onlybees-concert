@@ -262,13 +262,30 @@ export default function TicketsComingSoon() {
 
   const fetchTicketsData = async () => {
     try {
-      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT ;
-      const response = await axios.get(apiEndpoint);
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://concertsapi.onlybees.in";
+      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT || "/api/sections/availability";
+      
+      // In production, use full URL. In development, use proxy path
+      const isDevelopment = import.meta.env.DEV;
+      const fullApiUrl = isDevelopment 
+        ? apiEndpoint  // Use proxy in development
+        : `${apiBaseUrl}${apiEndpoint}`;  // Use full URL in production
+      
+      console.log("Fetching tickets from:", fullApiUrl);
+      const response = await axios.get(fullApiUrl);
       setTicketsData(response.data);
       setTicketIds(extractIdsFromResponse(response.data));
       setTickets(normalizeTickets(response.data));
     } catch (error) {
       console.error("Error fetching tickets:", error);
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://concertsapi.onlybees.in";
+      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT || "/api/sections/availability";
+      const isDevelopment = import.meta.env.DEV;
+      const fullApiUrl = isDevelopment 
+        ? apiEndpoint
+        : `${apiBaseUrl}${apiEndpoint}`;
+      console.error("API URL attempted:", fullApiUrl);
+      console.error("Error details:", error.response?.data || error.message);
     }
   };
   useEffect(() => {

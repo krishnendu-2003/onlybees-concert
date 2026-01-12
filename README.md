@@ -30,7 +30,9 @@ This will install all the required dependencies listed in `package.json`.
 
 ### 3. Environment Setup
 
-Create a `.env` file in the root directory to configure API endpoints:
+#### Local Development (.env file)
+
+Create a `.env` file in the root directory:
 
 ```bash
 cp .env.example .env
@@ -43,9 +45,13 @@ VITE_API_BASE_URL=https://concertsapi.onlybees.in
 VITE_API_ENDPOINT=/api/sections/availability
 ```
 
-**Environment Variables:**
-- `VITE_API_BASE_URL` - Base URL for the API server (used for proxy configuration)
-- `VITE_API_ENDPOINT` - API endpoint path for fetching ticket availability
+**For Local Development:**
+- `VITE_API_BASE_URL` - **Required** for Vite proxy to forward API requests
+- `VITE_API_ENDPOINT` - Optional (defaults to `/api/sections/availability`)
+
+**How it works:**
+- **Development**: Uses Vite proxy (`/api` → `VITE_API_BASE_URL`)
+- **Production**: Uses full URL (`VITE_API_BASE_URL` + `VITE_API_ENDPOINT`)
 
 **Note:** In Vite, environment variables must be prefixed with `VITE_` to be exposed to the client-side code.
 
@@ -161,11 +167,13 @@ npm run preview
    - Click "Add New Project"
    - Import your Git repository
 
-3. **Configure Environment Variables**:
+3. **Configure Environment Variables** (IMPORTANT):
    - In Vercel project settings, go to "Environment Variables"
    - Add the following:
      - `VITE_API_BASE_URL` = `https://concertsapi.onlybees.in`
      - `VITE_API_ENDPOINT` = `/api/sections/availability`
+   - **Select environments**: Choose **Production** and **Preview** (Development is optional since you develop locally)
+   - **Note**: Without these variables, the API calls will fail in production
 
 4. **Build Settings** (usually auto-detected):
    - Framework Preset: Vite
