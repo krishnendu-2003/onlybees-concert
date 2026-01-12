@@ -24,6 +24,7 @@ import MohombiFlyer from "../public/mohombi_flyer.jpg";
 import Stage from "../public/Stage.jpg";
 import Media from "./components/common/Media";
 import TicketsComingSoon from "./components/pages/TicketsComingSoon";
+import CheckoutPage from "./components/pages/CheckoutPage";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(EVENT.tabs[0]);
@@ -106,9 +107,14 @@ export default function App() {
     }
   };
 
-  // Simple route-less page render for the tickets URL
-  if (typeof window !== "undefined" && window.location.pathname === "/mohombi-shillong/tickets") {
-    return <TicketsComingSoon />;
+  // Simple route-less page render for the tickets and checkout URLs
+  if (typeof window !== "undefined") {
+    if (window.location.pathname === "/mohombi-shillong/tickets") {
+      return <TicketsComingSoon />;
+    }
+    if (window.location.pathname === "/mohombi-shillong/checkout") {
+      return <CheckoutPage />;
+    }
   }
 
   return (

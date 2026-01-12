@@ -68,9 +68,85 @@ export default function TicketsComingSoon() {
     }, 0);
   };
 
+  const getCartItems = () => {
+    return tickets
+      .filter(ticket => getQuantity(ticket.id) > 0)
+      .map(ticket => ({
+        ...ticket,
+        quantity: getQuantity(ticket.id),
+      }));
+  };
+
+  const getSubtotal = () => {
+    return getTotalPrice();
+  };
+
+  const getGST = () => {
+    return getSubtotal() * 0.18; // 18% GST
+  };
+
+  const getTotal = () => {
+    return getSubtotal() + getGST();
+  };
+
   const checkoutCart = () => {
-    // Placeholder for checkout functionality
-    console.log("Checkout", cart);
+    try {
+      console.log("checkoutCart called");
+      console.log("Cart:", cart);
+      console.log("Tickets:", tickets);
+      
+      const cartItems = getCartItems();
+      console.log("Cart Items:", cartItems);
+      
+      if (cartItems.length === 0) {
+        console.warn("Cart is empty");
+        alert("Your cart is empty. Please add tickets before proceeding.");
+        return;
+      }
+
+      // Prepare checkout details with _id
+      const checkoutDetails = {
+        items: cartItems.map(item => {
+          const price = typeof item.price === "number" ? item.price : parseFloat(item.price) || 0;
+          const itemDetails = {
+            _id: item._id || item.id,
+            title: item.title,
+            quantity: item.quantity,
+            price: price,
+            subtotal: price * item.quantity,
+          };
+          console.log("Item details:", itemDetails);
+          return itemDetails;
+        }),
+        subtotal: getSubtotal(),
+        gst: getGST(),
+        total: getTotal(),
+      };
+
+      // Console log the checkout details with _id
+      console.log("=== CHECKOUT DETAILS ===");
+      console.log("Full Checkout Details:", JSON.stringify(checkoutDetails, null, 2));
+      console.log("Items with _id:", checkoutDetails.items);
+      console.log("Subtotal:", checkoutDetails.subtotal);
+      console.log("GST (18%):", checkoutDetails.gst);
+      console.log("Total:", checkoutDetails.total);
+      console.log("========================");
+
+      // Save cart and tickets data to localStorage for checkout page
+      localStorage.setItem("checkoutCart", JSON.stringify(cart));
+      localStorage.setItem("checkoutTickets", JSON.stringify(tickets));
+      
+      // Navigate to checkout page after a short delay to ensure console.log is visible
+      if (typeof window !== "undefined") {
+        setTimeout(() => {
+          window.location.assign("/mohombi-shillong/checkout");
+        }, 500); // Increased delay to 500ms to see console logs
+      }
+    } catch (error) {
+      console.error("Error in checkoutCart:", error);
+      console.error("Error stack:", error.stack);
+      alert("An error occurred during checkout: " + error.message);
+    }
   };
   // getting data from the api using axios
   // using axios to get the data from the api
@@ -126,8 +202,10 @@ export default function TicketsComingSoon() {
       const taxIncluded = !!pickFirst(item, ["taxIncluded", "includesTax"]);
       const availabilityQuantity = pickFirst(item, ["availabilityQuantity", "availableQuantity", "quantity", "stock"]) ?? null;
       const isSoldOut = availabilityQuantity !== null && Number(availabilityQuantity) <= 0;
+      const originalId = pickFirst(item, ["_id", "id", "sectionId"]);
       return {
         id,
+        _id: originalId, // Preserve original _id from API
         title,
         price: Number.isFinite(rawPrice) ? rawPrice : rawPrice,
         features,
@@ -275,13 +353,54 @@ export default function TicketsComingSoon() {
             </div>
           )}
           {Object.keys(cart).length > 0 && (
-            <div style={styles.totalBar}>
-              <div style={styles.totalText}>
-                <span style={styles.totalLabel}>Total:</span>
-                <span style={styles.totalAmount}>₹{getTotalPrice()}</span>
+            <>
+              <div style={styles.totalBar}>
+                <div style={styles.totalText}>
+                  <span style={styles.totalLabel}>Total:</span>
+                  <span style={styles.totalAmount}>₹{getTotalPrice()}</span>
+                </div>
+                <button style={styles.proceedButton} onClick={checkoutCart}>Proceed</button>
               </div>
-              <button style={styles.proceedButton} onClick={checkoutCart}>Continue</button>
-            </div>
+              
+              {/* Order Summary Section */}
+              <div style={styles.orderSummarySection}>
+                <Card style={styles.orderSummaryCard}>
+                  <h2 style={styles.orderSummaryTitle}>Order Summary</h2>
+                  
+                  <div style={styles.orderItemsList}>
+                    {getCartItems().map((item) => (
+                      <div key={item.id} style={styles.orderItem}>
+                        <div style={styles.orderItemInfo}>
+                          <div style={styles.orderItemName}>{item.title}</div>
+                          <div style={styles.orderItemQuantity}>x{item.quantity}</div>
+                        </div>
+                        <div style={styles.orderItemPrice}>
+                          ₹{((typeof item.price === "number" ? item.price : parseFloat(item.price) || 0) * item.quantity).toLocaleString()}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={styles.orderDivider} />
+
+                  <div style={styles.orderPriceBreakdown}>
+                    <div style={styles.orderPriceRow}>
+                      <span style={styles.orderPriceLabel}>Subtotal</span>
+                      <span style={styles.orderPriceValue}>₹{getSubtotal().toLocaleString()}</span>
+                    </div>
+                    <div style={styles.orderPriceRow}>
+                      <span style={styles.orderPriceLabel}>GST (18%)</span>
+                      <span style={styles.orderPriceValue}>₹{getGST().toLocaleString()}</span>
+                    </div>
+                    <div style={styles.orderDivider} />
+                    <div style={styles.orderPriceRow}>
+                      <span style={styles.orderTotalLabel}>Total</span>
+                      <span style={styles.orderTotalValue}>₹{getTotal().toLocaleString()}</span>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </>
           )}
 
         </Container>
@@ -501,6 +620,84 @@ const styles = {
     padding: "12px 20px",
     filter: "none",
     opacity: 1,
+  },
+  orderSummarySection: {
+    marginTop: 24,
+  },
+  orderSummaryCard: {
+    padding: 24,
+  },
+  orderSummaryTitle: {
+    margin: "0 0 20px",
+    fontSize: 20,
+    fontWeight: 900,
+    color: COLORS.text,
+    letterSpacing: -0.2,
+  },
+  orderItemsList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 16,
+  },
+  orderItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "12px 0",
+  },
+  orderItemInfo: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+  },
+  orderItemName: {
+    fontSize: 16,
+    fontWeight: 700,
+    color: COLORS.text,
+  },
+  orderItemQuantity: {
+    fontSize: 14,
+    color: COLORS.muted,
+  },
+  orderItemPrice: {
+    fontSize: 18,
+    fontWeight: 900,
+    color: COLORS.green,
+  },
+  orderDivider: {
+    height: 1,
+    background: "rgba(255,255,255,0.08)",
+    width: "100%",
+    margin: "16px 0",
+  },
+  orderPriceBreakdown: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+  },
+  orderPriceRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  orderPriceLabel: {
+    fontSize: 14,
+    color: COLORS.muted,
+  },
+  orderPriceValue: {
+    fontSize: 16,
+    fontWeight: 700,
+    color: COLORS.text,
+  },
+  orderTotalLabel: {
+    fontSize: 18,
+    fontWeight: 900,
+    color: COLORS.text,
+  },
+  orderTotalValue: {
+    fontSize: 24,
+    fontWeight: 900,
+    color: COLORS.green,
   },
 };
 
