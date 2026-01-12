@@ -1,16 +1,185 @@
-# React + Vite
+# OnlyBees Concert - Event Ticket Booking Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React-based web application for booking concert tickets, built with Vite. Features ticket selection, cart management, and checkout functionality.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Event listing with detailed information
+- Ticket selection with quantity management
+- Shopping cart functionality
+- Checkout page with order summary
+- GST calculation (18%)
+- Responsive design
+- Real-time ticket availability
 
-## React Compiler
+## 📋 Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Before you begin, ensure you have the following installed:
 
-## Expanding the ESLint configuration
+- **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
+- **npm** (comes with Node.js) or **yarn**
+- **Git** - [Download](https://git-scm.com/)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🔧 Installation & Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/krishnendu-2003/onlybees-concert.git
+cd onlybees-concert
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+This will install all the required dependencies listed in `package.json`.
+
+### 3. Environment Setup
+
+Create a `.env` file in the root directory to configure API endpoints:
+
+```bash
+cp .env.example .env
+```
+
+Or create `.env` manually with the following variables:
+
+```env
+VITE_API_BASE_URL=https://concertsapi.onlybees.in
+VITE_API_ENDPOINT=/api/sections/availability
+```
+
+**Environment Variables:**
+- `VITE_API_BASE_URL` - Base URL for the API server (used for proxy configuration)
+- `VITE_API_ENDPOINT` - API endpoint path for fetching ticket availability
+
+**Note:** In Vite, environment variables must be prefixed with `VITE_` to be exposed to the client-side code.
+
+If you don't create a `.env` file, the application will use default values:
+- Default API Base URL: `https://concertsapi.onlybees.in`
+- Default API Endpoint: `/api/sections/availability`
+
+### 4. Start Development Server
+
+```bash
+npm run dev
+```
+
+The application will start on `http://localhost:5173` (or the next available port).
+
+Open your browser and navigate to the URL shown in the terminal.
+
+## 📜 Available Scripts
+
+- `npm run dev` - Start the development server with hot module replacement (HMR)
+- `npm run build` - Build the project for production (outputs to `dist/` folder)
+- `npm run preview` - Preview the production build locally
+- `npm run lint` - Run ESLint to check code quality
+
+## 🏗️ Project Structure
+
+```
+onlybees-concert/
+├── public/                 # Static assets
+│   ├── Logo.svg
+│   ├── mohombi_flyer.jpg
+│   └── Stage.jpg
+├── src/
+│   ├── assets/            # Image assets
+│   ├── components/        # React components
+│   │   ├── common/        # Reusable components
+│   │   ├── events/        # Event-related components
+│   │   ├── layout/        # Layout components
+│   │   └── pages/         # Page components
+│   ├── data/              # Static data (events.js)
+│   ├── hooks/             # Custom React hooks
+│   ├── theme/             # Theme configuration (colors.js)
+│   ├── App.jsx            # Main application component
+│   ├── main.jsx           # Application entry point
+│   └── index.css          # Global styles
+├── index.html             # HTML template
+├── vite.config.js         # Vite configuration
+├── package.json           # Project dependencies
+└── README.md             # This file
+```
+
+## 🔌 API Configuration
+
+The application connects to the OnlyBees Concert API:
+
+- **Base URL**: `https://concertsapi.onlybees.in`
+- **Endpoints**:
+  - `/api/sections/availability` - Fetch available ticket sections
+
+API calls are proxied through Vite's dev server. In production, ensure your API endpoints are correctly configured.
+
+## 🛠️ Troubleshooting
+
+### MIME Type Error
+
+If you encounter a MIME type error, try:
+
+```bash
+# Clear Vite cache
+rm -rf node_modules/.vite
+rm -rf dist
+
+# Restart the dev server
+npm run dev
+```
+
+### Port Already in Use
+
+If port 5173 is already in use, Vite will automatically use the next available port. Check the terminal output for the actual port number.
+
+### Module Not Found Errors
+
+```bash
+# Delete node_modules and reinstall
+rm -rf node_modules
+npm install
+```
+
+## 📦 Building for Production
+
+```bash
+npm run build
+```
+
+The production build will be created in the `dist/` directory. You can preview it locally with:
+
+```bash
+npm run preview
+```
+
+## 🎨 Tech Stack
+
+- **React 19** - UI library
+- **Vite 7** - Build tool and dev server
+- **Axios** - HTTP client for API calls
+- **ESLint** - Code linting
+
+## 📝 Notes
+
+- The application uses client-side routing without a router library
+- Cart data is stored in localStorage
+- GST is calculated at 18% of the subtotal
+- Maximum ticket quantity per type is limited to 5
+
+## 🤝 Contributing
+
+1. Create a new branch for your feature
+2. Make your changes
+3. Test thoroughly
+4. Submit a pull request
+
+## 📄 License
+
+[Add your license information here]
+
+---
+
+For questions or support, please contact [your contact information].

@@ -262,7 +262,8 @@ export default function TicketsComingSoon() {
 
   const fetchTicketsData = async () => {
     try {
-      const response = await axios.get("/api/sections/availability");
+      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+      const response = await axios.get(apiEndpoint);
       setTicketsData(response.data);
       setTicketIds(extractIdsFromResponse(response.data));
       setTickets(normalizeTickets(response.data));
@@ -361,45 +362,7 @@ export default function TicketsComingSoon() {
                 </div>
                 <button style={styles.proceedButton} onClick={checkoutCart}>Proceed</button>
               </div>
-              
-              {/* Order Summary Section */}
-              <div style={styles.orderSummarySection}>
-                <Card style={styles.orderSummaryCard}>
-                  <h2 style={styles.orderSummaryTitle}>Order Summary</h2>
-                  
-                  <div style={styles.orderItemsList}>
-                    {getCartItems().map((item) => (
-                      <div key={item.id} style={styles.orderItem}>
-                        <div style={styles.orderItemInfo}>
-                          <div style={styles.orderItemName}>{item.title}</div>
-                          <div style={styles.orderItemQuantity}>x{item.quantity}</div>
-                        </div>
-                        <div style={styles.orderItemPrice}>
-                          ₹{((typeof item.price === "number" ? item.price : parseFloat(item.price) || 0) * item.quantity).toLocaleString()}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div style={styles.orderDivider} />
-
-                  <div style={styles.orderPriceBreakdown}>
-                    <div style={styles.orderPriceRow}>
-                      <span style={styles.orderPriceLabel}>Subtotal</span>
-                      <span style={styles.orderPriceValue}>₹{getSubtotal().toLocaleString()}</span>
-                    </div>
-                    <div style={styles.orderPriceRow}>
-                      <span style={styles.orderPriceLabel}>GST (18%)</span>
-                      <span style={styles.orderPriceValue}>₹{getGST().toLocaleString()}</span>
-                    </div>
-                    <div style={styles.orderDivider} />
-                    <div style={styles.orderPriceRow}>
-                      <span style={styles.orderTotalLabel}>Total</span>
-                      <span style={styles.orderTotalValue}>₹{getTotal().toLocaleString()}</span>
-                    </div>
-                  </div>
-                </Card>
-              </div>
+          
             </>
           )}
 
