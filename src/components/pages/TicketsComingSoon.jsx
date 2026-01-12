@@ -262,7 +262,7 @@ export default function TicketsComingSoon() {
 
   const fetchTicketsData = async () => {
     try {
-      const apiEndpoint = "/api/sections/availability";
+      const apiEndpoint = import.meta.env.VITE_API_ENDPOINT ;
       const response = await axios.get(apiEndpoint);
       setTicketsData(response.data);
       setTicketIds(extractIdsFromResponse(response.data));
