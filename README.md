@@ -146,6 +146,42 @@ The production build will be created in the `dist/` directory. You can preview i
 npm run preview
 ```
 
+## 🚀 Deployment to Vercel
+
+### Prerequisites
+- Vercel account
+- Project connected to Git repository
+
+### Deployment Steps
+
+1. **Push your code to Git** (if not already done)
+
+2. **Import project to Vercel**:
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "Add New Project"
+   - Import your Git repository
+
+3. **Configure Environment Variables**:
+   - In Vercel project settings, go to "Environment Variables"
+   - Add the following:
+     - `VITE_API_BASE_URL` = `https://concertsapi.onlybees.in`
+     - `VITE_API_ENDPOINT` = `/api/sections/availability`
+
+4. **Build Settings** (usually auto-detected):
+   - Framework Preset: Vite
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+   - Install Command: `npm install`
+
+5. **Deploy**: Click "Deploy"
+
+### Important Notes
+
+- The `vercel.json` file is already configured to handle SPA routing
+- All routes will redirect to `index.html` for client-side routing
+- Make sure your `.env` variables are set in Vercel's environment variables section
+- The API proxy only works in development. For production, you may need to configure CORS on your API server or use a different approach
+
 ## 🎨 Tech Stack
 
 - **React 19** - UI library
