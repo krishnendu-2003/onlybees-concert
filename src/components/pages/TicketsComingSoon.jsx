@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import GlobalStyles from "../common/GlobalStyles";
 import Container from "../layout/Container";
-import TopNav from "../layout/TopNav";
 import Footer from "../layout/Footer";
 import Card from "../common/Card";
 import Paragraph from "../common/Paragraph";
@@ -136,7 +135,6 @@ export default function TicketsComingSoon() {
   return (
     <div style={styles.page}>
       <GlobalStyles />
-      <TopNav logoSrc={IMAGES.brandLogo} />
       <main style={styles.main}>
         <Container>
           <Card style={{ padding: 28, textAlign: "center" }}>
